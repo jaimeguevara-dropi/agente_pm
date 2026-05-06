@@ -1,5 +1,11 @@
 -- PM Operating System — Supabase schema
 -- Apply once via Supabase dashboard (SQL Editor) or CLI: supabase db push
+--
+-- Sections:
+--   1. Core tables (projects, teams, meetings, transcripts)
+--   2. Memory tables (draft_insights, approved_context)
+--   3. Execution tables (okrs, capabilities, features, user_stories, decisions, risks, followups, milestones)
+--   4. Dropi-specific tables (epics, subtasks)
 
 create table if not exists projects (
   id           uuid primary key default gen_random_uuid(),
@@ -187,3 +193,77 @@ create table if not exists milestones (
   status       text check (status in ('Upcoming','On Track','At Risk','Missed','Done')) default 'Upcoming',
   created_at   timestamptz default now()
 );
+
+-- ─────────────────────────────────────────────
+-- Dropi-specific tables
+-- ─────────────────────────────────────────────
+
+create table if not exists epics (
+  id                  uuid primary key default gen_random_uuid(),
+  epic_id             text unique not null,
+  -- title format: [product_code]: [name]_[country]_[users_affected]
+  product_code        text check (product_code in ('DROPI','DROPI APP','ADMIN','CAS')),
+  name                text not null,
+  country             text,
+  users_affected      text,
+  full_title          text generated always as (
+                        product_code || ': ' || name || '_' || coalesce(country,'') || '_' || coalesce(users_affected,'')
+                      ) stored,
+  -- description sections
+  context             text,
+  problem_description text,
+  why_important       text,
+  affected_user_types text,
+  relevant_data       text,
+  what_we_seek        text,
+  phases              text,
+  success_criteria    text,
+  metrics             text,
+  target_audience     text,
+  affects_white_labels boolean default false,
+  -- documentation
+  kickoff_link        text,
+  general_flow_link   text,
+  figma_link          text,
+  related_docs        text,
+  -- meta
+  project             text,
+  status              text check (status in ('Draft','Active','In Progress','Done','Archived')) default 'Draft',
+  created_at          timestamptz default now(),
+  updated_at          timestamptz default now()
+);
+
+create table if not exists subtasks (
+  id            uuid primary key default gen_random_uuid(),
+  subtask_id    text unique not null,
+  -- title format: [label_type] [product_code]: [name]
+  label_type    text check (label_type in ('UX','UI','Frontend','Backend','DBA','QA','Legal','Lanzamiento','Producto')),
+  product_code  text check (product_code in ('DROPI','DROPI APP','ADMIN','CAS')),
+  name          text not null,
+  full_title    text generated always as (
+                  '[' || coalesce(label_type,'') || '] ' || coalesce(product_code,'') || ': ' || name
+                ) stored,
+  description   text,
+  steps         text,
+  parent_type   text check (parent_type in ('epic','historia','producto')),
+  parent_id     text,
+  status        text check (status in ('To Do','In Progress','Done','Blocked')) default 'To Do',
+  assignee      text,
+  created_at    timestamptz default now()
+);
+
+-- Extend user_stories with Dropi-specific fields
+alter table user_stories
+  add column if not exists label_type    text check (label_type in ('UX','UI','Frontend','Backend','DBA','QA','Legal','Lanzamiento')),
+  add column if not exists product_code  text check (product_code in ('DROPI','DROPI APP','ADMIN','CAS')),
+  add column if not exists epic_id       text,
+  add column if not exists user_role     text,
+  add column if not exists user_action   text,
+  add column if not exists user_result   text,
+  add column if not exists process_description text,
+  add column if not exists user_flow     text,
+  add column if not exists additional_conditions text,
+  add column if not exists definition_of_done    text,
+  add column if not exists design_system_version text check (design_system_version in ('1.0','2.0')),
+  add column if not exists is_redesign   boolean default false,
+  add column if not exists resolutions   text;
