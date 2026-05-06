@@ -133,6 +133,57 @@ Va dentro de una épica. Agrupa actividades que desarrolla el equipo de producto
 
 ---
 
+## Documento de Kickoff
+
+### Estructura oficial
+
+**1. Título del Proyecto**
+El mismo título del pitch aprobado.
+
+**2. Introducción**
+- Contexto: breve resumen del problema y por qué es importante.
+- Objetivos del Proyecto: resultados específicos esperados.
+- Apetencia: tiempo y recursos asignados al proyecto.
+
+**3. Problema**
+- Descripción Detallada: amplía el problema con datos, ejemplos y contexto adicional.
+- Impacto: efecto en usuarios, negocio o ambos.
+- Soluciones Actuales: cómo se aborda hoy y limitaciones de esas soluciones.
+
+**4. Riesgos de Producto**
+
+| Riesgo | Pregunta clave |
+|---|---|
+| Riesgo de valor | ¿El cliente encontrará valor en esta solución? |
+| Riesgo de usabilidad | ¿Los usuarios podrán usarla efectivamente? |
+| Riesgo de factibilidad | ¿Podemos construirla con los recursos y tecnologías disponibles? |
+| Riesgo de viabilidad empresarial | ¿Esta solución funcionará para nuestro negocio? |
+| Riesgo Legal | ¿Cumplimos con todos los requerimientos de ley? |
+
+**5. Preguntas Abiertas**
+- Preguntas Clave: preguntas que deben responderse en la fase de shaping.
+- Hipótesis: posibles soluciones o enfoques a explorar.
+
+**6. Escenarios**
+- Posibles casos que pueden suceder durante el desarrollo.
+
+**7. Primeras Ideas**
+- Ideas iniciales que existen alrededor del proyecto.
+
+**8. Equipo del Proyecto**
+- Roles y Responsabilidades: rol, nombre, responsabilidades específicas.
+- Contacto: información de contacto de cada miembro.
+
+**9. Próximos Pasos**
+- Plan de Trabajo Inicial: primeros pasos concretos.
+- Reuniones de Seguimiento: calendario de revisiones periódicas.
+
+**10. Apéndices (Opcional)**
+- Datos de investigación, feedback de usuarios.
+- Wireframes o bocetos iniciales.
+
+---
+
 ## Tipos de usuarios en Dropi
 
 - Dropshipper
