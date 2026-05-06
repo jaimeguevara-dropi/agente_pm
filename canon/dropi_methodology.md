@@ -184,6 +184,36 @@ El mismo título del pitch aprobado.
 
 ---
 
+## Pitch
+
+Documento para generar interés y obtener aprobación para pasar a la fase de shaping.
+
+### Estructura oficial
+
+**Título del Pitch**
+Breve y descriptivo. Captura la esencia de la idea.
+
+**1. Problema**
+- ¿Qué problema estamos resolviendo? (claro y conciso)
+- ¿Por qué es importante? (datos o ejemplos concretos del impacto)
+- ¿Cómo se está resolviendo actualmente? (soluciones actuales y sus limitaciones)
+
+**2. Apetencia**
+- ¿Cuánto tiempo estamos dispuestos a invertir? (tiempo máximo realista)
+- ¿Qué restricciones tenemos? (técnicas, presupuestarias, de recursos)
+
+**3. Solución** *(Opcional)*
+- ¿Cómo podríamos resolver el problema? (ideas generales, sin detalle técnico)
+- ¿Qué beneficios aportaría? (para usuarios y para el negocio)
+- ¿Qué riesgos existen?
+
+**4. Consideraciones Adicionales** *(Opcional)*
+- ¿Qué datos o investigaciones respaldan esta idea?
+- ¿Qué preguntas abiertas tenemos? (para la fase de shaping)
+- ¿Quién sería el responsable del proyecto?
+
+---
+
 ## Brief de Lanzamiento
 
 Documento que se entrega al equipo de comunicaciones para coordinar el lanzamiento de una funcionalidad o producto.
