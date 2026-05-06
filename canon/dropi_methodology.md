@@ -184,6 +184,44 @@ El mismo título del pitch aprobado.
 
 ---
 
+## Brief de Lanzamiento
+
+Documento que se entrega al equipo de comunicaciones para coordinar el lanzamiento de una funcionalidad o producto.
+
+### Estructura oficial
+
+**1. Título del Proyecto**
+Nombre oficial del producto o funcionalidad.
+
+**2. Descripción General**
+- ¿Qué es? (2-3 líneas)
+- ¿Para quién está dirigido? (segmento o tipo de usuario)
+
+**3. Beneficios Clave**
+- Beneficio principal: el valor agregado central.
+- Beneficios secundarios: otros puntos fuertes (viñetas, máximo 5).
+
+**4. Objetivo del Lanzamiento**
+- Meta principal de la campaña.
+- Fechas de lanzamiento o ventana aproximada.
+- Estrategia de producto: requerimientos puntuales del equipo de producto para el lanzamiento.
+
+**5. Mensajes y Ángulos de Comunicación**
+- Mensaje clave: frase o tagline que resume la propuesta de valor.
+- Puntos de apoyo: ideas o frases que refuerzan la comunicación.
+
+**6. Recursos Disponibles**
+- Video demostrativo (enlace si aplica).
+- Documentación paso a paso en Tango.
+- Enlace a Figma / prototipo (solo si el equipo de comunicaciones lo requiere).
+- Documentos o presentaciones (PDF de funcionalidades destacadas, etc.).
+
+**7. Contacto Principal**
+- Persona de producto responsable de resolver dudas de posicionamiento, tono o alcance.
+- Fecha límite para enviar solicitudes de información adicional.
+
+---
+
 ## Tipos de usuarios en Dropi
 
 - Dropshipper

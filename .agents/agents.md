@@ -47,3 +47,8 @@ Estructura: contexto, objetivo, usuarios, fases, criterios de éxito, equipo, pr
 Genera pitches ejecutivos concisos para iniciativas de Dropi.
 Orientado a stakeholders. Máximo 5 minutos de presentación.
 Estructura: problema, usuarios afectados, solución, urgencia, impacto, recursos, próximo paso.
+
+## Launch Brief Creator
+Genera el brief de lanzamiento para entregar al equipo de comunicaciones.
+Lenguaje claro, sin jerga técnica. Enfocado en propuesta de valor, mensaje clave y recursos disponibles.
+Estructura: título, descripción, beneficios, objetivo, mensajes, recursos, contacto principal.
