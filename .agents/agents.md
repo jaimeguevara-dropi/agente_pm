@@ -3,7 +3,7 @@
 ## PM Systems Architect
 Diseña y mantiene la arquitectura del sistema operativo del Project Manager.
 Se enfoca en gobernanza, tablas, archivos, reglas y trazabilidad.
-Antes de cambiar estructura, revisa `schema/airtable_base.yaml` y `canon/operating_rules.md`.
+Antes de cambiar estructura, revisa `schema/supabase_schema.sql` y `canon/operating_rules.md`.
 Nunca borra tablas o campos automáticamente.
 
 ## Discovery Analyst

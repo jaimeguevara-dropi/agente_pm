@@ -1,90 +1,124 @@
-# PM Operating System para Antigravity + Airtable
+# PM Operating System
 
-Este workspace deja listo un sistema base para trabajar con:
+Sistema operativo de gestión de proyectos para PMs que trabajan con IA conversacional (Claude Code / Claude Desktop). Integra Supabase como base de datos y Claude como agente de análisis, síntesis y seguimiento.
 
-- transcripciones crudas como evidencia inmutable
-- iteración conversacional en borradores
-- contexto aprobado como memoria oficial
-- seguimiento contra decisiones, fechas y OKRs
+## ¿Qué hace este sistema?
 
-## Estructura
+Te permite trabajar de forma estructurada con transcripciones de reuniones, borradores iterativos y contexto oficial aprobado, usando un agente de IA como copiloto de PM.
 
-```text
-.agents/
-  agents.md
-  workflows/
-  skills/
-schema/
-canon/
-logs/
-.env.example
-requirements.txt
+El flujo base es:
+
+1. **Ingestas una transcripción** de reunión (discovery, planning, follow-up, etc.)
+2. **El agente analiza** y genera borradores: AS-IS, TO-BE, capacidades, HUs, riesgos, decisiones
+3. **Iteras conversacionalmente** hasta que el contenido es correcto
+4. **Apruebas** explícitamente → el sistema promueve esa versión a memoria oficial en Supabase
+5. **El seguimiento posterior** compara siempre contra lo aprobado, nunca contra borradores
+
+---
+
+## Arquitectura del sistema
+
 ```
+.agents/
+  agents.md               → roles de los agentes (Architect, Analyst, Canon Keeper, etc.)
+  conversation_rules.md   → reglas de modo borrador vs. modo publicación oficial
+  workflows/              → comandos de alto nivel (/bootstrap-pm-os, /ingest-transcript, etc.)
+  skills/
+    pm-bootstrap/         → verifica el schema en Supabase y reporta diferencias
+    canon-keeper/         → promueve contenido aprobado a Supabase y canon/
+    asis-tobe-analyst/    → analiza transcripciones y genera borradores
+    delivery-controller/  → compara ejecución real contra OKRs, hitos y decisiones
+    transcript-intake/    → clasifica e ingesta transcripciones crudas
+schema/
+  supabase_schema.sql     → DDL completo para crear las tablas en Supabase
+canon/
+  operating_rules.md      → reglas inmutables del sistema (qué es borrador, qué es oficial)
+.env.example              → variables de entorno requeridas
+requirements.txt          → dependencias Python
+```
+
+---
+
+## Base de datos (Supabase)
+
+El sistema usa las siguientes tablas en Supabase (PostgreSQL):
+
+| Tabla | Propósito |
+|---|---|
+| `projects` | Proyectos gestionados |
+| `teams` | Equipos responsables |
+| `meetings` | Registro maestro de reuniones |
+| `transcripts` | Evidencia cruda e inmutable |
+| `draft_insights` | Capa temporal de trabajo iterativo |
+| `approved_context` | Memoria oficial aprobada por el usuario |
+| `okrs` | OKRs y métricas por proyecto |
+| `capabilities` | Capacidades del mapa de impacto |
+| `features` | Features derivadas de capacidades |
+| `user_stories` | Historias de usuario |
+| `decisions` | Decisiones oficiales del proyecto |
+| `risks` | Riesgos identificados y seguimiento |
+| `followups` | Compromisos y seguimiento operativo |
+| `milestones` | Hitos de entrega |
+
+---
 
 ## Requisitos
 
-- Antigravity instalado
 - Python 3.11+
-- una base independiente en Airtable
-- un Personal Access Token con acceso a esa base
+- Proyecto en [Supabase](https://supabase.com) con las tablas creadas
+- Claude Code o Claude Desktop con acceso al workspace
 
-## Variables de entorno
-
-Copia `.env.example` a `.env` y completa:
-
-- `AIRTABLE_TOKEN`
-- `AIRTABLE_BASE_ID`
-- `AIRTABLE_API_URL` (normalmente no necesitas cambiarlo)
-- `BOOTSTRAP_REPORT_PATH` (opcional)
-
-## Scopes mínimos recomendados del token
-
-- `schema.bases:read`
-- `schema.bases:write`
-- `data.records:read`
-- `data.records:write`
-
-Además, la cuenta dueña del token debe tener permisos de Creator o superiores sobre la base.
+---
 
 ## Primer arranque
 
-Desde la raíz del workspace:
-
 ```bash
+# 1. Clonar y preparar el entorno
+git clone https://github.com/jaimeguevara-dropi/agente_pm.git
+cd agente_pm
 python -m venv .venv
-source .venv/bin/activate  # en Windows usa .venv\Scripts\activate
+source .venv/bin/activate   # Windows: .venv\Scripts\activate
 pip install -r requirements.txt
+
+# 2. Configurar variables de entorno
 cp .env.example .env
-# edita .env
-python .agents/skills/pm-bootstrap/scripts/airtable_bootstrap.py
+# Edita .env con tu SUPABASE_URL y SUPABASE_SERVICE_KEY
+
+# 3. Aplicar el schema en Supabase
+# Abre Supabase > SQL Editor > pega el contenido de schema/supabase_schema.sql > Run
+
+# 4. Verificar que todo está bien
+python .agents/skills/pm-bootstrap/scripts/supabase_bootstrap.py
 ```
 
-El script:
+---
 
-- lee `schema/airtable_base.yaml`
-- consulta el esquema actual de la base
-- crea tablas faltantes
-- crea campos faltantes
-- no borra nada
-- deja un reporte en `logs/bootstrap_report.md`
+## Variables de entorno
 
-## Uso dentro de Antigravity
+| Variable | Descripción |
+|---|---|
+| `SUPABASE_URL` | URL de tu proyecto Supabase (`https://xxxx.supabase.co`) |
+| `SUPABASE_SERVICE_KEY` | Service role key de Supabase (Settings → API) |
+| `BOOTSTRAP_REPORT_PATH` | Ruta del reporte de bootstrap (default: `logs/bootstrap_report.md`) |
 
-Abre el workspace en Antigravity y luego puedes usar:
+---
 
-- `/bootstrap-pm-os`
-- `/ingest-transcript`
-- `/promote-to-canon`
-- `/weekly-control-tower`
+## Comandos disponibles
 
-## Flujo recomendado
+| Comando | Qué hace |
+|---|---|
+| `/bootstrap-pm-os` | Verifica el schema en Supabase y reporta diferencias |
+| `/ingest-transcript` | Ingesta y clasifica una transcripción cruda |
+| `/promote-to-canon` | Promueve un borrador aprobado a memoria oficial |
+| `/weekly-control-tower` | Genera corte semanal de estado del portafolio |
+| `/project-followup` | Seguimiento de compromisos y riesgos de un proyecto |
+| `/update-business-context` | Actualiza el contexto de negocio de un proyecto |
 
-1. Subes o pegas una transcripción.
-2. El agente la clasifica y crea borradores en la capa temporal.
-3. Iteras con el agente hasta cerrar AS-IS, TO-BE o decisiones.
-4. Solo cuando apruebas, el sistema promueve esa versión a memoria oficial.
-5. Los seguimientos posteriores comparan contra lo aprobado, no contra borradores viejos.
+---
 
-## Siguiente paso práctico
+## Principios del sistema
 
-Después del bootstrap, prueba primero con una sola transcripción real y valida el comportamiento antes de ampliar automatizaciones o agregar más tablas.
+- **Los borradores no son verdad.** Ningún agente usa `draft_insights` como fuente oficial.
+- **La aprobación es explícita.** Solo el usuario puede promover contenido a `approved_context`.
+- **Las transcripciones son inmutables.** Se registran tal cual, sin resúmenes encima.
+- **No se borra estructura automáticamente.** El sistema agrega, nunca elimina sin instrucción humana.
